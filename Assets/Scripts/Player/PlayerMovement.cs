@@ -4,7 +4,7 @@ using UnityEngine;
 // 플레이어 캐릭터를 사용자 입력에 따라 움직이는 스크립트
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 9f; // 앞뒤 움직임의 속도
+    public float moveSpeed = 10f; // 앞뒤 움직임의 속도
     public float rotateSpeed = 180f; // 좌우 회전 속도
     private bool groundedPlayer;
     private Vector3 playerVelocity;
@@ -23,6 +23,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        Move();
+    }
+
+    private void Move()
+    {
         groundedPlayer = playerController.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {
@@ -30,20 +35,22 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Horizontal input
-        Vector3 move = new Vector3(playerInput.moveX, 0, playerInput.moveZ);
-
-        if (move != Vector3.zero)
-        {
-            transform.forward = move;
-        }
+        Vector3 forward = transform.forward * playerInput.moveZ;
+        Vector3 right = transform.right * playerInput.moveX;
 
         // Apply gravity
         playerVelocity.y += gravityValue * Time.deltaTime;
 
         // Combine horizontal & vertical movement
-        Vector3 finalMove = (move * moveSpeed) + (playerVelocity.y * Vector3.up);
+        Vector3 moveDir = (forward + right).normalized;
+        Vector3 finalMove = (moveDir * moveSpeed) + (playerVelocity.y * Vector3.up);
 
         playerController.Move(finalMove * Time.deltaTime);
         playerAnimator.SetFloat("moveSpeed", playerInput.moveZ);
+    }
+
+    private void Rotate()
+    {
+
     }
 }
