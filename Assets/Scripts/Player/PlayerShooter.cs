@@ -30,7 +30,7 @@ public class PlayerShooter : MonoBehaviour
         gun.gameObject.SetActive(false);
     }
 
-    private void update()
+    private void Update()
     {
 
     }
@@ -39,7 +39,7 @@ public class PlayerShooter : MonoBehaviour
     {
         Debug.Log("IK 실행 중");
         // 총의 기준점 gunPivot을 3D 모델의 오른쪽 팔꿈치 위치로 이동
-        gunPivot.position = playerAnimator.GetIKHintPosition(AvatarIKHint.RightElbow);
+        // gunPivot.position = playerAnimator.GetIKHintPosition(AvatarIKHint.RightElbow);
 
         // IK를 사용해 왼손의 위치와 회전을 총의 왼쪽 손잡이에 맞춤
         playerAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1.0f);

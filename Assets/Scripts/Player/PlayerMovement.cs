@@ -34,23 +34,22 @@ public class PlayerMovement : MonoBehaviour
             playerVelocity.y = 0f;
         }
 
-        // Horizontal input
+        // Horizontal Move
         Vector3 forward = transform.forward * playerInput.moveZ;
         Vector3 right = transform.right * playerInput.moveX;
 
+        Vector3 moveDir = (forward + right).normalized;
+
+        // 수평 이동 (x, z)
+        Vector3 horizontalMove = moveDir * moveSpeed;
+
         // Apply gravity
         playerVelocity.y += gravityValue * Time.deltaTime;
+        Vector3 verticalMove = Vector3.up * playerVelocity.y;
 
         // Combine horizontal & vertical movement
-        Vector3 moveDir = (forward + right).normalized;
-        Vector3 finalMove = (moveDir * moveSpeed) + (playerVelocity.y * Vector3.up);
 
-        playerController.Move(finalMove * Time.deltaTime);
+        playerController.Move((horizontalMove + verticalMove) * Time.deltaTime);
         playerAnimator.SetFloat("moveSpeed", playerInput.moveZ);
-    }
-
-    private void Rotate()
-    {
-
     }
 }
